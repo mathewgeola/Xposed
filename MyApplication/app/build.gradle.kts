@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.api)
 
     implementation(libs.appcompat)
     implementation(libs.material)
