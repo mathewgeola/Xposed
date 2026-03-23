@@ -2,10 +2,13 @@ package com.example.myapplication;
 
 import android.util.Log;
 
+import com.example.myapplication.hook.ClipboardHook;
+import com.example.myapplication.hook.HideDev;
+import com.example.myapplication.hook.HideStack;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -127,6 +130,23 @@ public class HookEntry implements IXposedHookZygoteInit, IXposedHookLoadPackage 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
                 Log.d(TAG, "afterHookedMethod: " + param.thisObject);
+            }
+        });
+
+
+        HideDev.hook(lpparam);
+        ClipboardHook.hook(lpparam);
+        HideStack.hook(lpparam);
+
+        XposedHelpers.findAndHookMethod("com.yuanrenxue.challenge.fragment.exercise.Ex013Fragment", classLoader, "getStackTrace", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+            }
+
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
             }
         });
     }
